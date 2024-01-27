@@ -6,7 +6,7 @@ import './App.css';
 function App () {
   
   const [solution, setSolution] = useState("");
-  const [currentGuess, setCurrentGuess] = useState({word: "", status: -1});
+  const [currentGuess, setCurrentGuess] = useState({word: "", status: []});
   // statuses: -1 = not yet verified, 0 = incorrect, 1 = yellow, 2 = green
   const [guesses, setGuesses] = useState([]);
   const [guessNumber, setGuessNumber] = useState(-1);
@@ -35,7 +35,7 @@ function App () {
   // }, [guessNumber])
 
   function incrementGuessNumber() {
-    setCurrentGuess(currentGuess + 1);
+    setGuessNumber(guessNumber => guessNumber + 1);
   };
 
   // function checkIfRealWord(word) {
@@ -55,7 +55,9 @@ function App () {
   return (
     <div>
       <h1>bienvenue au wordle</h1>
-      <GuessInput solution={solution} guessIncrementer={incrementGuessNumber}/>
+      <GuessInput solution={solution} 
+                  guessIncrementer={incrementGuessNumber}
+                  currentGuessSetter={setCurrentGuess}/>
       <div>
       <Guess word='tester'/>
       </div>

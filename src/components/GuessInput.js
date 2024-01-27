@@ -1,7 +1,7 @@
 /* component for inputting guesses */
 import React, { useState } from 'react';
 
-function GuessInput({solution, guessIncrementer, currentGuessSetter, guessListUpdater}) {
+function GuessInput({solution, guessIncrementer, guessListUpdater}) {
 
     const [guess, setGuess] = useState({word: "", status: []});
 
@@ -13,10 +13,10 @@ function GuessInput({solution, guessIncrementer, currentGuessSetter, guessListUp
         if (isRealFrenchWord(guess.word) && guess.word.length == 6) {
             // verify word against solution
             for (let i = 0; i < guess.word.length; i++) {
-                if (solution[i] == guess[i]) {
+                if (solution[i] == guess.word[i]) {
                     verifArray[i] = 2; // green
                     continue;
-                } else if (solution.includes(guess[i])) {
+                } else if (solution.includes(guess.word[i])) {
                     verifArray[i] = 1; // yellow
                 } else {
                     verifArray[i] = 0; // grey
@@ -26,8 +26,8 @@ function GuessInput({solution, guessIncrementer, currentGuessSetter, guessListUp
             // set guess, increment guess count
             setGuess({...guess, status: verifArray});
             guessListUpdater(guess);
-            // currentGuessSetter({word: guess, status: verifArray});
             guessIncrementer();
+            
         } else {
             console.log("not a word");
             // need to add error handling

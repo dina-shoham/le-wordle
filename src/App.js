@@ -6,9 +6,8 @@ import './App.css';
 function App () {
   
   const [solution, setSolution] = useState("");
-  // const [currentGuess, setCurrentGuess] = useState({word: "", status: []});
   // statuses: -1 = not yet verified, 0 = incorrect, 1 = yellow, 2 = green
-  const [guesses, setGuesses] = useState(Array(7));
+  const [guesses, setGuesses] = useState([]);
   const [guessNumber, setGuessNumber] = useState(-1);
 
   // call generate solution, empty array to ensure it only happens once
@@ -31,22 +30,10 @@ function App () {
 
   // update guesses list
   function updateGuessList(guess) {
-    let guessesTmp = [...guesses];
-    guessesTmp[guessNumber] = guess;
-    setGuesses(guessesTmp);
-    console.log(guesses);
+    setGuesses([
+      ...guesses, guess
+    ]);
   };
-
-  // useEffect(() => {
-  //   if (guessNumber > 0) {
-  //     let guessesTmp = [...guesses];
-  //     guessesTmp[guessNumber - 1] = currentGuess;
-  //     setGuesses(guessesTmp);
-      
-  //     console.log("updated guesses");
-  //     console.log(guesses);
-  //   }
-  // }, [guessNumber])
 
   function incrementGuessNumber() {
     setGuessNumber(guessNumber => guessNumber + 1);
@@ -57,7 +44,6 @@ function App () {
       <h1>bienvenue au wordle</h1>
       <GuessInput solution={solution} 
                   guessIncrementer={incrementGuessNumber}
-                  // currentGuessSetter={setCurrentGuess}
                   guessListUpdater={updateGuessList}/>
       <div>
       {/* <Guess word='tester'/> */}
@@ -65,6 +51,12 @@ function App () {
       <div>
         <p>solution is: {solution}</p>
         <p>you are on guess #: {guessNumber}</p>
+        <p>you have guessed these words:</p>
+        <ul>
+          {guesses.map(guess => (
+            <li>{guess.word}, {guess.status}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );

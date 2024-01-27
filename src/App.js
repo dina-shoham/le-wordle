@@ -6,9 +6,9 @@ import './App.css';
 function App () {
   
   const [solution, setSolution] = useState("");
-  const [currentGuess, setCurrentGuess] = useState({word: "", status: []});
+  // const [currentGuess, setCurrentGuess] = useState({word: "", status: []});
   // statuses: -1 = not yet verified, 0 = incorrect, 1 = yellow, 2 = green
-  const [guesses, setGuesses] = useState([]);
+  const [guesses, setGuesses] = useState(Array(7));
   const [guessNumber, setGuessNumber] = useState(-1);
 
   // call generate solution, empty array to ensure it only happens once
@@ -29,37 +29,38 @@ function App () {
     setGuessNumber(0);
   }, []);
 
-  // update guesses list when guess count is updated in child comp (guessInput)
+  // update guesses list
+  function updateGuessList(guess) {
+    let guessesTmp = [...guesses];
+    guessesTmp[guessNumber] = guess;
+    setGuesses(guessesTmp);
+    console.log(guesses);
+  };
+
   // useEffect(() => {
-  //   setGuesses[guesses.concat(currentGuess)]
+  //   if (guessNumber > 0) {
+  //     let guessesTmp = [...guesses];
+  //     guessesTmp[guessNumber - 1] = currentGuess;
+  //     setGuesses(guessesTmp);
+      
+  //     console.log("updated guesses");
+  //     console.log(guesses);
+  //   }
   // }, [guessNumber])
 
   function incrementGuessNumber() {
     setGuessNumber(guessNumber => guessNumber + 1);
   };
 
-  // function checkIfRealWord(word) {
-  //   // check word's validity
-  // };
-
-  // function verifyGuess() {
-  //   console.log("verifying");
-  //   console.log(currentGuess);
-  // };
-
-  // const handleSubmit = (event) => {
-  //   alert('A name was submitted: ' + this.state.value);
-  //   event.preventDefault();
-  // };
-
   return (
     <div>
       <h1>bienvenue au wordle</h1>
       <GuessInput solution={solution} 
                   guessIncrementer={incrementGuessNumber}
-                  currentGuessSetter={setCurrentGuess}/>
+                  // currentGuessSetter={setCurrentGuess}
+                  guessListUpdater={updateGuessList}/>
       <div>
-      <Guess word='tester'/>
+      {/* <Guess word='tester'/> */}
       </div>
       <div>
         <p>solution is: {solution}</p>

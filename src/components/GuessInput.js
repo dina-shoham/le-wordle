@@ -32,6 +32,8 @@ function GuessInput({solution, guessIncrementer, guessListUpdater, disabled}) {
             console.log("not a word");
             // need to add error handling
         }
+
+        setGuessWord('');
     }
 
     function isRealFrenchWord (word) {
@@ -46,6 +48,7 @@ function GuessInput({solution, guessIncrementer, guessListUpdater, disabled}) {
                         required
                         minLength="6"
                         maxLength="6"
+                        value={guessWord}
                         onChange={event => setGuessWord(event.target.value)}/>
                     <input type="submit" value="enter"/>
                 </form>

@@ -20,8 +20,6 @@ function App () {
       try {
         let response = await fetch('https://trouve-mot.fr/api/size/6');
         response = await response.json();
-        console.log("response:");
-        console.log(response[0].name);
         setSolution(response[0].name);
       } catch (error) {
         console.error(error);
@@ -106,11 +104,11 @@ function App () {
       <div>
         <p>you are on guess #: {guessNumber}</p>
         <p>you have guessed these words:</p>
-        {/* <ul> */}
-          {guesses.map(guess => (
-            <Guess word={guess.word} statusArr={guess.status}/>
+          {guesses.map((guess, index) => (
+            <Guess word={guess.word}
+                   statusArr={guess.status}
+                   key={index}/>
           ))}
-        {/* </ul> */}
       </div>
     </div>
   );

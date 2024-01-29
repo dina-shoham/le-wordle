@@ -39,6 +39,15 @@ function App () {
     setGuessNumber(guessNumber => guessNumber + 1);
   };
 
+  // lose after 7 guesses
+  useEffect(() => {
+    console.log("guess number changed");
+    console.log(guessNumber);
+    if(guessNumber == 7) {
+      console.log("you have lost");
+    }
+  }, [guessNumber])
+
   return (
     <div>
       <h1>bienvenue au wordle</h1>

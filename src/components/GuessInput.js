@@ -3,20 +3,21 @@ import React, { useState } from 'react';
 
 function GuessInput({solution, guessIncrementer, guessListUpdater}) {
 
-    const [guess, setGuess] = useState({word: "", status: []});
+    const [guessWord, setGuessWord] = useState("");
 
     const handleSubmit = event => {
         event.preventDefault();
 
         let verifArray = [-1, -1, -1, -1, -1, -1];
 
-        if (isRealFrenchWord(guess.word) && guess.word.length == 6) {
+        if (isRealFrenchWord(guessWord) && guessWord.length == 6) {
+        // if (isRealFrenchWord(guess.word) && guess.word.length == 6) {
             // verify word against solution
-            for (let i = 0; i < guess.word.length; i++) {
-                if (solution[i] == guess.word[i]) {
+            for (let i = 0; i < guessWord.length; i++) {
+                if (solution[i] == guessWord[i]) {
                     verifArray[i] = 2; // green
                     continue;
-                } else if (solution.includes(guess.word[i])) {
+                } else if (solution.includes(guessWord[i])) {
                     verifArray[i] = 1; // yellow
                 } else {
                     verifArray[i] = 0; // grey
@@ -24,7 +25,7 @@ function GuessInput({solution, guessIncrementer, guessListUpdater}) {
             }
 
             // set guess, increment guess count
-            setGuess({...guess, status: verifArray});
+            const guess = {word: guessWord, status: verifArray};
             guessListUpdater(guess);
             guessIncrementer();
             
@@ -45,7 +46,7 @@ function GuessInput({solution, guessIncrementer, guessListUpdater}) {
                     required
                     minLength="6"
                     maxLength="6"
-                    onChange={event => setGuess({word: event.target.value})}/>
+                    onChange={event => setGuessWord(event.target.value)}/>
                 <input type="submit" value="enter"/>
             </form>
         </div>

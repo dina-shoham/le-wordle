@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Guess from './components/Guess';
 import GuessInput from './components/GuessInput';
 import './styles.css';
-import LetterTile from './components/LetterTile';
 
 function App () {
   
@@ -36,6 +35,7 @@ function App () {
     ]);
   };
 
+  // self explanatory i hope
   function incrementGuessNumber() {
     setGuessNumber(guessNumber => guessNumber + 1);
   };
@@ -56,14 +56,13 @@ function App () {
                   guessIncrementer={incrementGuessNumber}
                   guessListUpdater={updateGuessList}/>
       <div>
-        {/* <p>solution is: {solution}</p> */}
         <p>you are on guess #: {guessNumber}</p>
         <p>you have guessed these words:</p>
-        <ul>
+        {/* <ul> */}
           {guesses.map(guess => (
-            <Guess word={guess.word}/>
+            <Guess word={guess.word} statusArr={guess.status}/>
           ))}
-        </ul>
+        {/* </ul> */}
       </div>
     </div>
   );

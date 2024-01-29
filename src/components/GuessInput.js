@@ -11,7 +11,6 @@ function GuessInput({solution, guessIncrementer, guessListUpdater}) {
         let verifArray = [-1, -1, -1, -1, -1, -1];
 
         if (isRealFrenchWord(guessWord) && guessWord.length == 6) {
-        // if (isRealFrenchWord(guess.word) && guess.word.length == 6) {
             // verify word against solution
             for (let i = 0; i < guessWord.length; i++) {
                 if (solution[i] == guessWord[i]) {

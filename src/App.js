@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Guess from './components/Guess';
 import GuessInput from './components/GuessInput';
+import Toastify from 'toastify-js'
+import "toastify-js/src/toastify.css"
 import './styles.css';
 
 function App () {
@@ -42,10 +44,23 @@ function App () {
 
   // lose after 7 guesses
   useEffect(() => {
-    console.log("guess number changed");
-    console.log(guessNumber);
     if(guessNumber == 7) {
-      console.log("you have lost");
+      // show "you lost" message
+      Toastify({
+        text: `Tu as perdu! La réponse était: ${solution}`,
+        duration: -1,
+        position: 'center',
+        offset: {
+          y: 50
+        },
+        style: {
+          background: "#000",
+          color: "#fff",
+        },
+      }).showToast(); 
+
+      // disable input
+      
     }
   }, [guessNumber])
 

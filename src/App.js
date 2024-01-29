@@ -7,7 +7,6 @@ import LetterTile from './components/LetterTile';
 function App () {
   
   const [solution, setSolution] = useState("");
-  const [currentGuess, setCurrentGuess] = useState({word: "", status: []});
   // statuses: -1 = not yet verified, 0 = incorrect, 1 = yellow, 2 = green
   const [guesses, setGuesses] = useState([]);
   const [guessNumber, setGuessNumber] = useState(-1);
@@ -30,28 +29,41 @@ function App () {
     setGuessNumber(0);
   }, []);
 
-  // update guesses list when guess count is updated in child comp (guessInput)
-  // useEffect(() => {
-  //   setGuesses[guesses.concat(currentGuess)]
-  // }, [guessNumber])
+  // update guesses list
+  function updateGuessList(guess) {
+    setGuesses([
+      ...guesses, guess
+    ]);
+  };
 
   function incrementGuessNumber() {
     setGuessNumber(guessNumber => guessNumber + 1);
   };
 
-  // function checkIfRealWord(word) {
-  //   // check word's validity
-  // };
+  // lose after 7 guesses
+  useEffect(() => {
+    console.log("guess number changed");
+    console.log(guessNumber);
+    if(guessNumber == 7) {
+      console.log("you have lost");
+    }
+  }, [guessNumber])
 
   return (
     <div>
       <h1>le wordle</h1>
       <GuessInput solution={solution} 
                   guessIncrementer={incrementGuessNumber}
-                  currentGuessSetter={setCurrentGuess}/>
+                  guessListUpdater={updateGuessList}/>
       <div>
         {/* <p>solution is: {solution}</p> */}
         <p>you are on guess #: {guessNumber}</p>
+        <p>you have guessed these words:</p>
+        <ul>
+          {guesses.map(guess => (
+            <li>{guess.word}, {guess.status}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );

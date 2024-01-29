@@ -1,21 +1,22 @@
 /* component for inputting guesses */
 import React, { useState } from 'react';
 
-function GuessInput({solution, guessIncrementer, currentGuessSetter}) {
+function GuessInput({solution, guessIncrementer, guessListUpdater}) {
 
-    const [guess, setGuess] = useState("");
+    const [guess, setGuess] = useState({word: "", status: []});
 
     const handleSubmit = event => {
         event.preventDefault();
 
         let verifArray = [-1, -1, -1, -1, -1, -1];
-        if (isRealFrenchWord(guess) && guess.length == 6) {
+
+        if (isRealFrenchWord(guess.word) && guess.word.length == 6) {
             // verify word against solution
-            for (let i = 0; i < guess.length; i++) {
-                if (solution[i] == guess[i]) {
+            for (let i = 0; i < guess.word.length; i++) {
+                if (solution[i] == guess.word[i]) {
                     verifArray[i] = 2; // green
                     continue;
-                } else if (solution.includes(guess[i])) {
+                } else if (solution.includes(guess.word[i])) {
                     verifArray[i] = 1; // yellow
                 } else {
                     verifArray[i] = 0; // grey
@@ -23,15 +24,14 @@ function GuessInput({solution, guessIncrementer, currentGuessSetter}) {
             }
 
             // set guess, increment guess count
-            currentGuessSetter({word: guess, status: verifArray});
+            setGuess({...guess, status: verifArray});
+            guessListUpdater(guess);
             guessIncrementer();
-            console.log("word verified");
-            console.log(verifArray);
+            
         } else {
             console.log("not a word");
             // need to add error handling
         }
-        console.log("checking...");
     }
 
     function isRealFrenchWord (word) {
@@ -45,7 +45,7 @@ function GuessInput({solution, guessIncrementer, currentGuessSetter}) {
                     required
                     minLength="6"
                     maxLength="6"
-                    onChange={event => setGuess(event.target.value)}/>
+                    onChange={event => setGuess({word: event.target.value})}/>
                 <input type="submit" value="enter"/>
             </form>
         </div>

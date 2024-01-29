@@ -48,7 +48,6 @@ function GuessInput({solution, guessIncrementer, currentGuessSetter}) {
                     onChange={event => setGuess(event.target.value)}/>
                 <input type="submit" value="enter"/>
             </form>
-            <p>solution in this component is {solution}</p>
         </div>
     )
 }

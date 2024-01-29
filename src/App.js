@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Guess from './components/Guess';
 import GuessInput from './components/GuessInput';
-import './App.css';
+import './styles.css';
+import LetterTile from './components/LetterTile';
 
 function App () {
   
@@ -19,7 +20,7 @@ function App () {
         let response = await fetch('https://trouve-mot.fr/api/size/6');
         response = await response.json();
         console.log("response:");
-        console.log(response);
+        console.log(response[0].name);
         setSolution(response[0].name);
       } catch (error) {
         console.error(error);
@@ -42,27 +43,14 @@ function App () {
   //   // check word's validity
   // };
 
-  // function verifyGuess() {
-  //   console.log("verifying");
-  //   console.log(currentGuess);
-  // };
-
-  // const handleSubmit = (event) => {
-  //   alert('A name was submitted: ' + this.state.value);
-  //   event.preventDefault();
-  // };
-
   return (
     <div>
-      <h1>bienvenue au wordle</h1>
+      <h1>le wordle</h1>
       <GuessInput solution={solution} 
                   guessIncrementer={incrementGuessNumber}
                   currentGuessSetter={setCurrentGuess}/>
       <div>
-      <Guess word='tester'/>
-      </div>
-      <div>
-        <p>solution is: {solution}</p>
+        {/* <p>solution is: {solution}</p> */}
         <p>you are on guess #: {guessNumber}</p>
       </div>
     </div>

@@ -11,6 +11,7 @@ function App () {
   // statuses: -1 = not yet verified, 0 = incorrect, 1 = yellow, 2 = green
   const [guesses, setGuesses] = useState([]);
   const [guessNumber, setGuessNumber] = useState(-1);
+  const [guessingDisabled, setGuessingDisabled] = useState(false);
 
   // call generate solution, empty array to ensure it only happens once
   // https://stackoverflow.com/questions/53332321/react-hook-warnings-for-async-function-in-useeffect-useeffect-function-must-ret
@@ -60,7 +61,7 @@ function App () {
       }).showToast(); 
 
       // disable input
-      
+      setGuessingDisabled(true);
     }
   }, [guessNumber])
 
@@ -69,7 +70,8 @@ function App () {
       <h1>le wordle</h1>
       <GuessInput solution={solution} 
                   guessIncrementer={incrementGuessNumber}
-                  guessListUpdater={updateGuessList}/>
+                  guessListUpdater={updateGuessList}
+                  disabled={guessingDisabled}/>
       <div>
         <p>you are on guess #: {guessNumber}</p>
         <p>you have guessed these words:</p>

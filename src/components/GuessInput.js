@@ -1,7 +1,7 @@
 /* component for inputting guesses */
 import React, { useState } from 'react';
 
-function GuessInput({solution, guessIncrementer, guessListUpdater}) {
+function GuessInput({solution, guessIncrementer, guessListUpdater, disabled}) {
 
     const [guessWord, setGuessWord] = useState("");
 
@@ -40,14 +40,16 @@ function GuessInput({solution, guessIncrementer, guessListUpdater}) {
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <input name="guess"
-                    required
-                    minLength="6"
-                    maxLength="6"
-                    onChange={event => setGuessWord(event.target.value)}/>
-                <input type="submit" value="enter"/>
-            </form>
+            <fieldset disabled={disabled}>
+                <form onSubmit={handleSubmit}>
+                    <input name="guess"
+                        required
+                        minLength="6"
+                        maxLength="6"
+                        onChange={event => setGuessWord(event.target.value)}/>
+                    <input type="submit" value="enter"/>
+                </form>
+            </fieldset>
         </div>
     )
 }

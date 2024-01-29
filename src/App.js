@@ -26,7 +26,7 @@ function App () {
       }
     };
     generateSolution();
-    setGuessNumber(0);
+    setGuessNumber(1);
   }, []);
 
   // update guesses list
@@ -61,7 +61,7 @@ function App () {
         <p>you have guessed these words:</p>
         <ul>
           {guesses.map(guess => (
-            <li>{guess.word}, {guess.status}</li>
+            <Guess word={guess.word}/>
           ))}
         </ul>
       </div>

@@ -1,16 +1,21 @@
 /* component for inputting guesses */
 import React, { useState } from 'react';
+import Toastify from 'toastify-js'
+import "toastify-js/src/toastify.css"
 
 function GuessInput({solution, guessIncrementer, guessListUpdater, disabled}) {
 
     const [guessWord, setGuessWord] = useState("");
+    let isFrenchWord = true;
+    // const [isFrenchWord, setIsFrenchWord] = useState(true);
 
-    const handleSubmit = event => {
+    async function handleSubmit (event) {
         event.preventDefault();
-
+        await checkIfFrenchWord();        
+        console.log(`is is a real word??? ${isFrenchWord}`);
+        
         let verifArray = [-1, -1, -1, -1, -1, -1];
-
-        if (isRealFrenchWord(guessWord) && guessWord.length == 6) {
+        if (isFrenchWord && guessWord.length == 6) {
             // verify word against solution
             for (let i = 0; i < guessWord.length; i++) {
                 if (solution[i] == guessWord[i]) {
@@ -30,16 +35,40 @@ function GuessInput({solution, guessIncrementer, guessListUpdater, disabled}) {
             
         } else {
             console.log("not a word");
-            // need to add error handling
+            // show "you lost" message
+            Toastify({
+                text: `Pas un vrai mot!`,
+                duration: 2000,
+                position: 'center',
+                offset: {
+                y: 50
+                },
+                style: {
+                background: "#000",
+                color: "#fff",
+                },
+            }).showToast(); 
         }
-
         setGuessWord('');
     }
 
-    function isRealFrenchWord (word) {
-        return true;
-    }
+    async function checkIfFrenchWord () {
+        console.log(`checking if ${guessWord} a real word!`);
+        const url = `https://fr.wiktionary.org/w/api.php?action=query&format=json&titles=${guessWord}`;
 
+        try {
+            let response = await fetch(url);
+            response = await response.json();
+            // if page does not exist
+            if('-1' in response.query.pages) {
+                console.log("pg does not exist");
+                isFrenchWord = false;
+            }
+        } catch (error) {
+            console.error(error);
+          }        
+    }
+    
     return (
         <div>
             <fieldset disabled={disabled}>

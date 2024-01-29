@@ -45,7 +45,7 @@ function App () {
 
   // lose after 7 guesses
   useEffect(() => {
-    if(guessNumber == 7) {
+    if (guessNumber == 7) {
       // show "you lost" message
       Toastify({
         text: `Tu as perdu! La réponse était: ${solution}`,
@@ -63,7 +63,38 @@ function App () {
       // disable input
       setGuessingDisabled(true);
     }
-  }, [guessNumber])
+  }, [guessNumber]);
+  
+  // winning
+  function equals2(element) {
+    return element == 2;
+  }
+
+  useEffect(() => {
+    let hasWon = false;
+    if (guessNumber > 1) {
+      let mostRecentGuessStatus = guesses[guesses.length - 1].status;
+      hasWon = mostRecentGuessStatus.every(equals2);
+    }
+    if (hasWon) {
+      // show "you won" message
+      Toastify({
+        text: `Tu as gagné!`,
+        duration: -1,
+        position: 'center',
+        offset: {
+          y: 50
+        },
+        style: {
+          background: "#000",
+          color: "#fff",
+        },
+      }).showToast(); 
+
+      // disable input
+      setGuessingDisabled(true);
+    }
+  }, [guesses]);
 
   return (
     <div>

@@ -7,9 +7,10 @@ function GuessInput({solution, guessIncrementer, guessListUpdater, disabled}) {
 
     const [guessWord, setGuessWord] = useState("");
     let isFrenchWord = true;
-    // const [isFrenchWord, setIsFrenchWord] = useState(true);
 
     async function handleSubmit (event) {
+        console.log(`solution: ${solution}`)
+
         event.preventDefault();
         await checkIfFrenchWord();        
         console.log(`is is a real word??? ${isFrenchWord}`);
@@ -22,7 +23,16 @@ function GuessInput({solution, guessIncrementer, guessListUpdater, disabled}) {
                     verifArray[i] = 2; // green
                     continue;
                 } else if (solution.includes(guessWord[i])) {
-                    verifArray[i] = 1; // yellow
+                    // check for existing yellows with same letter
+                    for (let j = 0; j < i; j++) {
+                        if (verifArray[j] == 1 && guessWord[i] == guessWord[j]) {
+                            verifArray[i] = 0;
+                            console.log(`duplicate yellow at ${i} and ${j} - ${guessWord[i]}`)
+                            break;
+                        } else {
+                            verifArray[i] = 1; // yellow
+                        }
+                    }
                 } else {
                     verifArray[i] = 0; // grey
                 }
@@ -31,8 +41,7 @@ function GuessInput({solution, guessIncrementer, guessListUpdater, disabled}) {
             // set guess, increment guess count
             const guess = {word: guessWord, status: verifArray};
             guessListUpdater(guess);
-            guessIncrementer();
-            
+            guessIncrementer();            
         } else {
             console.log("not a word");
             // show "you lost" message

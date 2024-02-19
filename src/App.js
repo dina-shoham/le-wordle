@@ -43,7 +43,7 @@ function App () {
 
   // lose after 7 guesses
   useEffect(() => {
-    if (guessNumber == 7) {
+    if (guessNumber > 7) {
       // show "you lost" message
       Toastify({
         text: `Tu as perdu! La réponse était: ${solution}`,

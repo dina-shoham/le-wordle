@@ -13,28 +13,45 @@ function GuessInput({solution, guessIncrementer, guessListUpdater, disabled}) {
 
         event.preventDefault();
         await checkIfFrenchWord();        
-        console.log(`is is a real word??? ${isFrenchWord}`);
+        console.log(`is it a real word??? ${isFrenchWord}`);
         
         let verifArray = [-1, -1, -1, -1, -1, -1];
-        if (isFrenchWord && guessWord.length == 6) {
+        if (isFrenchWord && guessWord.length === 6) {
             // verify word against solution
             for (let i = 0; i < guessWord.length; i++) {
-                if (solution[i] == guessWord[i]) {
+                if (solution[i] === guessWord[i]) {
                     verifArray[i] = 2; // green
                     continue;
                 } else if (solution.includes(guessWord[i])) {
                     // check for existing yellows with same letter
-                    for (let j = 0; j < i; j++) {
-                        if (verifArray[j] == 1 && guessWord[i] == guessWord[j]) {
-                            verifArray[i] = 0;
-                            console.log(`duplicate yellow at ${i} and ${j} - ${guessWord[i]}`)
-                            break;
-                        } else {
-                            verifArray[i] = 1; // yellow
+                    if (i > 0) {
+                        for (let j = 0; j < i; j++) {
+                            if ((verifArray[j] === 1) && guessWord[i] === guessWord[j]) {
+                                verifArray[i] = 0;
+                                console.log(`duplicate yellow at ${i} and ${j} - ${guessWord[i]}`)
+                                break;
+                            } else {
+                                verifArray[i] = 1; // yellow
+                            }
                         }
+                    } else {
+                        verifArray[i] = 1;
                     }
                 } else {
                     verifArray[i] = 0; // grey
+                }
+            }
+
+            // double check the word and reset yellows if there are greens
+            for (let i = 0; i < guessWord.length; i++) {
+                if (verifArray[i] === 2) {
+                    for (let j = 0; j < guessWord.length; j++) {
+                        if (guessWord[j] === guessWord[i] && verifArray[j] === 1 && i!==j) {
+                            console.log("dup letters, one is green");
+                            verifArray[j] = 0;
+                            break;
+                        }
+                    }
                 }
             }
 

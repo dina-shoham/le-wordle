@@ -4,6 +4,7 @@
   --yellow: #c9b458;
   --green: #6aaa64;
   --blue: #007acc;
+  --lightgrey: #d3d6da;
 }
 
 body {
@@ -22,7 +23,7 @@ code {
 
 .square {
   background: var(--white);
-  border: 2px solid var(--grey);
+  border: 2px solid var(--lightgrey);
   font-size: 24px;
   font-weight: bold;
   height: 50px;

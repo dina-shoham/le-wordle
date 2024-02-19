@@ -1,5 +1,5 @@
 /* component for inputting guesses */
-import React, { useState } from 'react';
+import React, { useState, KeyboardEvent } from 'react';
 import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
 

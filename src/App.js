@@ -10,24 +10,27 @@ function App () {
     VARIABLES
   =================================================================*/
   // var currentGuess = "";
-  var guessIndex = -1;
-  var emptyStatusArr = [-1, -1, -1, -1, -1, -1];
-  var isFrenchWord = true;
-  // statuses: -1 = not yet verified, 0 = incorrect, 1 = yellow, 2 = green
-
+  const emptyStatusArr = [-1, -1, -1, -1, -1, -1];
+  let guessIndex = -1;
+  let isFrenchWord = true;
+  
   const [solution, setSolution] = useState("");
   const [guessNumber, setGuessNumber] = useState(-1);
   const [currentGuess, setCurrentGuess] = useState("");
   const [guessingDisabled, setGuessingDisabled] = useState(false);
   const [guesses, setGuesses] = useState([{word: "      ", status: emptyStatusArr},
-                                           {word: "      ", status: emptyStatusArr},
-                                           {word: "      ", status: emptyStatusArr},
-                                           {word: "      ", status: emptyStatusArr},
-                                           {word: "      ", status: emptyStatusArr},
-                                           {word: "      ", status: emptyStatusArr},
-                                           {word: "      ", status: emptyStatusArr}                                           
-                                         ]);
+                                          {word: "      ", status: emptyStatusArr},
+                                          {word: "      ", status: emptyStatusArr},
+                                          {word: "      ", status: emptyStatusArr},
+                                          {word: "      ", status: emptyStatusArr},
+                                          {word: "      ", status: emptyStatusArr},
+                                          {word: "      ", status: emptyStatusArr}                                           
+  ]);
+  // statuses: -1 = not yet verified, 0 = incorrect, 1 = yellow, 2 = green
   
+  // just for testing
+  const [displayGuess, setDisplayGuess] = useState(false);
+
   /*=================================================================
     SETUP
   =================================================================*/
@@ -72,6 +75,8 @@ function App () {
         // enter
         if (event.keyCode == 13) {
           console.log("enter");
+          // console.log("current guess is: " + currentGuess);
+          console.log("guesses: " + guesses[0].word);
           verifyGuess();
         }
       }
@@ -80,7 +85,7 @@ function App () {
     return () => {
       document.removeEventListener('keydown', keyDownHandler);
     };
-  }, [])
+  }, []);
   
   // update current guess
   function updateCurrentGuess(char) {
@@ -111,19 +116,17 @@ function App () {
   function incrementGuessIndex() {
     guessIndex = guessIndex + 1;
     // setGuessIndex(guessIndex => guessIndex + 1);
-    console.log("incr");
   };
 
   function decrementGuessIndex() {
     guessIndex = guessIndex - 1;
-    console.log("decr");
   };
 
   /*=================================================================
     SUBMITTING GUESS
   =================================================================*/
   // update guesses list
-  function updateGuessList(guess) {
+  function updateGuessList(guess) {   
     setGuesses([
       ...guesses, guess
     ]);
@@ -136,10 +139,11 @@ function App () {
 
   // verify guess
   async function verifyGuess() {
-    var guess = currentGuess;
-    console.log("you guessed " + guess);
+    let guess = currentGuess;
+    // console.log("you guessed " + currentGuess);
+    setDisplayGuess(true);
 
-    await checkIfFrenchWord();      
+    await checkIfFrenchWord(guess);      
     console.log(`is it a real word??? ${isFrenchWord}`);
     
     if (isFrenchWord && guess.length === 6) {
@@ -157,15 +161,22 @@ function App () {
         } else {
             verifArray[i] = 0; // grey
         }
-
         // todo: duplicate letter handling
         // todo: accent handling
       }
+
+      console.log("guess " + guess + ", status: " + verifArray);
+      
+      // add guess to guesses array, increment guess count
+      let guessesTmp = [...guesses];
+      guessesTmp[guessNumber - 1] = {word: guess, status: verifArray};
+      setGuesses(() => guessesTmp);
+      incrementGuessNumber();
     }
   };
 
   async function checkIfFrenchWord (word) {
-    console.log(`checking if ${word} a real word!`);
+    console.log(`checking if ${word} is a real word!`);
     const url = `https://fr.wiktionary.org/w/api.php?action=query&format=json&titles=${word}`;
 
     try {
@@ -237,6 +248,16 @@ function App () {
     }
   }, [guesses]);
 
+  /*=================================================================
+    HELPERS
+  =================================================================*/
+  function testGuess({display}) {
+    if(display) {
+      return <p>{currentGuess}</p>
+    } else {
+      return <p>guess not yet submitted</p>
+    }
+  }
 
   /*=================================================================
     RENDER
@@ -244,10 +265,10 @@ function App () {
   return (
     <div>
       <h1>le wordle</h1>
-      <GuessInput solution={solution} 
+      {/* <GuessInput solution={solution} 
                   guessIncrementer={incrementGuessNumber}
                   guessListUpdater={updateGuessList}
-                  disabled={guessingDisabled}/>
+                  disabled={guessingDisabled}/> */}
       <div>
         <p>you are on guess #: {guessNumber}</p>
           {guesses.map((guess, index) => (
@@ -255,6 +276,10 @@ function App () {
                    statusArr={guess.status}
                    key={index}/>
           ))}
+      </div>
+      <div>
+        <p>current guess is: {currentGuess}</p>
+        <testGuess display={displayGuess} />
       </div>
     </div>
   );

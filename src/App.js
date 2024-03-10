@@ -4,6 +4,7 @@ import GuessInput from './components/GuessInput';
 import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
 import './styles.css';
+import { WORDS } from './dictionary/words'
 
 function App () {
   /*=================================================================
@@ -12,12 +13,13 @@ function App () {
   // var currentGuess = "";
   const emptyStatusArr = [-1, -1, -1, -1, -1, -1];
   let guessIndex = -1;
-  let isFrenchWord = true;
+  let isValidGuess = true;
   
   const [solution, setSolution] = useState("");
   const [guessNumber, setGuessNumber] = useState(-1);
   const [currentGuess, setCurrentGuess] = useState("");
-  const [guessingDisabled, setGuessingDisabled] = useState(false);
+  const [currentGuessIndex, setCurrentGuessIndex] = useState(-1);
+  // const [guessingDisabled, setGuessingDisabled] = useState(false);
   const [guesses, setGuesses] = useState([{word: "      ", status: emptyStatusArr},
                                           {word: "      ", status: emptyStatusArr},
                                           {word: "      ", status: emptyStatusArr},
@@ -28,9 +30,6 @@ function App () {
   ]);
   // statuses: -1 = not yet verified, 0 = incorrect, 1 = yellow, 2 = green
   
-  // just for testing
-  const [displayGuess, setDisplayGuess] = useState(false);
-
   /*=================================================================
     SETUP
   =================================================================*/
@@ -38,14 +37,9 @@ function App () {
   // https://stackoverflow.com/questions/53332321/react-hook-warnings-for-async-function-in-useeffect-useeffect-function-must-ret
   useEffect(() => {
     async function generateSolution() {
-      try {
-        let response = await fetch('https://trouve-mot.fr/api/size/6');
-        response = await response.json();
-        setSolution(response[0].name);
-        console.log((response[0].name));
-      } catch (error) {
-        console.error(error);
-      }
+      let lineNum = Math.floor((Math.random() * WORDS.length)); 
+      setSolution(WORDS[lineNum]);
+      console.log("solution: " + WORDS[lineNum]);
     };
     generateSolution();
     setGuessNumber(1);
@@ -57,27 +51,22 @@ function App () {
   // keyboard listener for typing in guesses
   useEffect(() => {
     const keyDownHandler = event => {
-      if (guessIndex < 5) {
+      if (currentGuessIndex < 5 || !isValidGuess) {
         // ensure key is in alphabet (qwerty: 65-90)
         if (event.keyCode >= 65 && event.keyCode <= 90) {
           updateCurrentGuess(event.key);
         }
-        // todo: handle azerty keyboard accent keys
-        // azerty: 65-90 and 50, 55, 57, 48, 192, 229
 
         // backspace
         if (event.keyCode == 8) {
           handleBackspace();
         }
-      }
-
-      if (guessIndex == 5) {
+      } 
+      
+      if (currentGuessIndex == 5) {
         // enter
         if (event.keyCode == 13) {
-          console.log("enter");
-          // console.log("current guess is: " + currentGuess);
-          console.log("guesses: " + guesses[0].word);
-          verifyGuess();
+          verifyGuess(currentGuess);
         }
       }
     }
@@ -85,21 +74,25 @@ function App () {
     return () => {
       document.removeEventListener('keydown', keyDownHandler);
     };
-  }, []);
+  }, [currentGuess, currentGuessIndex]);
   
+  // typing helpers: 
   // update current guess
   function updateCurrentGuess(char) {
-    incrementGuessIndex();
-    setCurrentGuess(currentGuess => currentGuess.substring(0, guessIndex) + char + currentGuess.substring(guessIndex + 1));
+    setCurrentGuessIndex(currentGuessIndex => currentGuessIndex + 1);
+    setCurrentGuess(currentGuess => currentGuess + char);
   };
   
   // handle backspace event
   function handleBackspace() {
+    // prevent from decementing past -1
+    if (currentGuessIndex > -1) {
+      setCurrentGuessIndex(currentGuessIndex => currentGuessIndex - 1);
+    }
     setCurrentGuess(currentGuess => currentGuess.substring(0, currentGuess.length - 1));
-    decrementGuessIndex();
   };
 
-  // render current guess on grid
+  // render current guess in the boxes on the screen (only guesses array renders)
   useEffect(() => {
     var guessPadded = currentGuess;
     // pad guess with spaces
@@ -113,42 +106,35 @@ function App () {
     setGuesses(() => guessesTmp);
   }, [currentGuess])
   
-  function incrementGuessIndex() {
-    guessIndex = guessIndex + 1;
-    // setGuessIndex(guessIndex => guessIndex + 1);
-  };
-
-  function decrementGuessIndex() {
-    guessIndex = guessIndex - 1;
-  };
-
   /*=================================================================
     SUBMITTING GUESS
   =================================================================*/
-  // update guesses list
-  function updateGuessList(guess) {   
-    setGuesses([
-      ...guesses, guess
-    ]);
-  };
-  
   // self explanatory i hope
   function incrementGuessNumber() {
     setGuessNumber(guessNumber => guessNumber + 1);
   };
 
   // verify guess
-  async function verifyGuess() {
-    // let guess = currentGuess;
-    console.log("calling checkIfFrenchWord on " + currentGuess);
-    setDisplayGuess(true);
+  function verifyGuess(guess) {
+    // check if guess is in list
+    if (!WORDS.includes(guess)) {
+      isValidGuess = false;
+      console.log("word not in list!");
+      Toastify({
+        text: `Word not in list!`,
+        duration: 2000,
+        position: 'center',
+        offset: {
+          y: 50
+        },
+        style: {
+          background: "#000",
+          color: "#fff",
+        },
+      }).showToast(); 
+    }
 
-    await checkIfFrenchWord(currentGuess);      
-    console.log(`is it a real word??? ${isFrenchWord}`);
-
-    let guess = "maison";
-    
-    if (isFrenchWord && guess.length === 6) {
+    if (isValidGuess && guess.length === 6) {
       let verifArray = emptyStatusArr;
 
       // verify word against solution
@@ -164,7 +150,6 @@ function App () {
             verifArray[i] = 0; // grey
         }
         // todo: duplicate letter handling
-        // todo: accent handling
       }
 
       console.log("guess " + guess + ", status: " + verifArray);
@@ -174,24 +159,11 @@ function App () {
       guessesTmp[guessNumber - 1] = {word: guess, status: verifArray};
       setGuesses(() => guessesTmp);
       incrementGuessNumber();
+
+      // reset current guess state vars
+      setCurrentGuessIndex(-1);
+      setCurrentGuess("");
     }
-  };
-
-  async function checkIfFrenchWord (word) {
-    console.log(`checking if ${word} is a real word!`);
-    const url = `https://fr.wiktionary.org/w/api.php?action=query&format=json&titles=${word}`;
-
-    try {
-        let response = await fetch(url);
-        response = await response.json();
-        // if page does not exist
-        if('-1' in response.query.pages) {
-            console.log("pg does not exist");
-            isFrenchWord = false;
-        }
-    } catch (error) {
-        console.error(error);
-      }        
   };
 
   /*=================================================================
@@ -215,7 +187,7 @@ function App () {
       }).showToast(); 
 
       // disable input
-      setGuessingDisabled(true);
+      // setGuessingDisabled(true);
     }
   }, [guessNumber]);
   
@@ -246,20 +218,9 @@ function App () {
       }).showToast(); 
 
       // disable input
-      setGuessingDisabled(true);
+      // setGuessingDisabled(true);
     }
   }, [guesses]);
-
-  /*=================================================================
-    HELPERS
-  =================================================================*/
-  function TestGuess({display}) {
-    if(display) {
-      return <p>{currentGuess}</p>
-    } else {
-      return <p>guess not yet submitted</p>
-    }
-  }
 
   /*=================================================================
     RENDER
@@ -281,7 +242,7 @@ function App () {
       </div>
       <div>
         <p>current guess is: {currentGuess}</p>
-        <TestGuess display={displayGuess} />
+        <p>current guess index is: {currentGuessIndex}</p>
       </div>
     </div>
   );

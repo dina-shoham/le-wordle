@@ -95,17 +95,19 @@ function App () {
 
   // render current guess in the boxes on the screen (only guesses array renders)
   useEffect(() => {
-    var guessPadded = currentGuess;
-    // pad guess with spaces
-    while(guessPadded.length < 6) {
-      guessPadded = guessPadded.concat(" ");
+    if (guessNumber <= 7) {
+      var guessPadded = currentGuess;
+      // pad guess with spaces
+      while(guessPadded.length < 6) {
+        guessPadded = guessPadded.concat(" ");
+      }
+  
+      // add to guesses array
+      let guessesTmp = [...guesses];
+      guessesTmp[guessNumber - 1] = {word: guessPadded, status: emptyStatusArr};
+      setGuesses(() => guessesTmp);
     }
-
-    // add to guesses array
-    let guessesTmp = [...guesses];
-    guessesTmp[guessNumber - 1] = {word: guessPadded, status: emptyStatusArr};
-    setGuesses(() => guessesTmp);
-  }, [currentGuess])
+  }, [currentGuess, guessNumber])
   
   /*=================================================================
     SUBMITTING GUESS

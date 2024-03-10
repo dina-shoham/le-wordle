@@ -36,10 +36,9 @@ function App () {
   // https://stackoverflow.com/questions/53332321/react-hook-warnings-for-async-function-in-useeffect-useeffect-function-must-ret
   useEffect(() => {
     function generateSolution() {
-      // let lineNum = Math.floor((Math.random() * WORDS.length)); 
-      // setSolution(WORDS[lineNum]);
-      // console.log("solution: " + WORDS[lineNum]);
-      setSolution("lettre")
+      let lineNum = Math.floor((Math.random() * WORDS.length)); 
+      setSolution(WORDS[lineNum]);
+      console.log("solution: " + WORDS[lineNum]);
     };
     generateSolution();
     setGuessNumber(1);
@@ -174,8 +173,6 @@ function App () {
         }
       }
 
-      console.log("guess " + guess + ", status: " + verifArray);
-      
       // add guess to guesses array, increment guess count
       let guessesTmp = [...guesses];
       guessesTmp[guessNumber - 1] = {word: guess, status: verifArray};
@@ -230,7 +227,6 @@ function App () {
       // disable input
       setGuessingDisabled(true);
       
-      console.log("here");
       // show "you won" message
       Toastify({
         text: `Tu as gagné!`,

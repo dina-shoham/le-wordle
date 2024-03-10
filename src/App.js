@@ -12,14 +12,13 @@ function App () {
   =================================================================*/
   // var currentGuess = "";
   const emptyStatusArr = [-1, -1, -1, -1, -1, -1];
-  let guessIndex = -1;
   let isValidGuess = true;
   
   const [solution, setSolution] = useState("");
   const [guessNumber, setGuessNumber] = useState(-1);
   const [currentGuess, setCurrentGuess] = useState("");
   const [currentGuessIndex, setCurrentGuessIndex] = useState(-1);
-  // const [guessingDisabled, setGuessingDisabled] = useState(false);
+  const [guessingDisabled, setGuessingDisabled] = useState(false);
   const [guesses, setGuesses] = useState([{word: "      ", status: emptyStatusArr},
                                           {word: "      ", status: emptyStatusArr},
                                           {word: "      ", status: emptyStatusArr},
@@ -51,22 +50,24 @@ function App () {
   // keyboard listener for typing in guesses
   useEffect(() => {
     const keyDownHandler = event => {
-      if (currentGuessIndex < 5 || !isValidGuess) {
-        // ensure key is in alphabet (qwerty: 65-90)
-        if (event.keyCode >= 65 && event.keyCode <= 90) {
-          updateCurrentGuess(event.key);
-        }
-
-        // backspace
-        if (event.keyCode == 8) {
-          handleBackspace();
-        }
-      } 
-      
-      if (currentGuessIndex == 5) {
-        // enter
-        if (event.keyCode == 13) {
-          verifyGuess(currentGuess);
+      if (!guessingDisabled) {  
+        if (currentGuessIndex <= 5 || !isValidGuess) {
+          // ensure key is in alphabet (qwerty: 65-90)
+          if (currentGuessIndex < 5 && event.keyCode >= 65 && event.keyCode <= 90) {
+            updateCurrentGuess(event.key);
+          }
+          
+          // backspace
+          if (event.keyCode == 8) {
+            handleBackspace();
+          }
+        } 
+        
+        if (currentGuessIndex == 5) {
+          // enter
+          if (event.keyCode == 13) {
+            verifyGuess(currentGuess);
+          }
         }
       }
     }
@@ -74,7 +75,7 @@ function App () {
     return () => {
       document.removeEventListener('keydown', keyDownHandler);
     };
-  }, [currentGuess, currentGuessIndex]);
+  }, [currentGuess, currentGuessIndex, guessingDisabled]);
   
   // typing helpers: 
   // update current guess
@@ -109,11 +110,6 @@ function App () {
   /*=================================================================
     SUBMITTING GUESS
   =================================================================*/
-  // self explanatory i hope
-  function incrementGuessNumber() {
-    setGuessNumber(guessNumber => guessNumber + 1);
-  };
-
   // verify guess
   function verifyGuess(guess) {
     // check if guess is in list
@@ -158,7 +154,8 @@ function App () {
       let guessesTmp = [...guesses];
       guessesTmp[guessNumber - 1] = {word: guess, status: verifArray};
       setGuesses(() => guessesTmp);
-      incrementGuessNumber();
+      
+      setGuessNumber(guessNumber => guessNumber + 1);
 
       // reset current guess state vars
       setCurrentGuessIndex(-1);
@@ -172,6 +169,9 @@ function App () {
   // lose after 7 guesses
   useEffect(() => {
     if (guessNumber > 7) {
+      // disable input
+      setGuessingDisabled(true);
+
       // show "you lost" message
       Toastify({
         text: `Tu as perdu! La réponse était: ${solution}`,
@@ -185,9 +185,6 @@ function App () {
           color: "#fff",
         },
       }).showToast(); 
-
-      // disable input
-      // setGuessingDisabled(true);
     }
   }, [guessNumber]);
   
@@ -198,11 +195,16 @@ function App () {
 
   useEffect(() => {
     let hasWon = false;
+
     if (guessNumber > 1) {
-      let mostRecentGuessStatus = guesses[guesses.length - 1].status;
+      let mostRecentGuessStatus = guesses[guessNumber - 2].status; // - 2 because -1 for index, -1 because we increment guess number after hitting enter
       hasWon = mostRecentGuessStatus.every(equals2);
     }
     if (hasWon) {
+      // disable input
+      setGuessingDisabled(true);
+      
+      console.log("here");
       // show "you won" message
       Toastify({
         text: `Tu as gagné!`,
@@ -216,11 +218,8 @@ function App () {
           color: "#fff",
         },
       }).showToast(); 
-
-      // disable input
-      // setGuessingDisabled(true);
     }
-  }, [guesses]);
+  }, [guessNumber]);
 
   /*=================================================================
     RENDER

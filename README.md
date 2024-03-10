@@ -30,7 +30,7 @@ although I wouldn't recommend trying it just yet (big bugs atm), you can run the
     - [x]  [trouve-mot.fr](http://trouve-mot.fr) api
 - [ ]  input guess
     - [x]  type guess in grid
-        - [ ]  submit guess (NOT WORKING RN!)
+        - [x]  submit guess
         - [ ]  bug: squares shift down when user starts typing
     - [x]  components: one component with text input + submit button
         - [x]  clear input after submit but do not refresh the page
@@ -45,7 +45,7 @@ although I wouldn't recommend trying it just yet (big bugs atm), you can run the
             - [x]  iterate over letters of word, setting status
             - [x]  pass solution back to app??
             - [ ]  handle repeat letters (at least one green or yellow)
-- [ ]  guess grid
+- [x]  guess grid
     - [x]  components:
         - [x]  show grid of all seven guesses at beginning
             - [x]  type in the boxes instead of in input
@@ -60,7 +60,6 @@ although I wouldn't recommend trying it just yet (big bugs atm), you can run the
         - [x]  display error message
         - [x]  disable input
     - [x]  win if they get it right
-    - [ ]  new colour for right letter, wrong accent
     - [ ]  disable special characters and numbers
 - [ ]  styling:
     - [ ]  animate letters
@@ -80,4 +79,4 @@ although I wouldn't recommend trying it just yet (big bugs atm), you can run the
 - [ ]  instructions
 - [ ]  homepage
 - [ ]  web hosting
-- [ ]  switch api calls to a library of most common french words
+- [x]  switch api calls to a library of most common french words

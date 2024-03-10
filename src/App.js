@@ -35,10 +35,11 @@ function App () {
   // call generate solution, empty array to ensure it only happens once
   // https://stackoverflow.com/questions/53332321/react-hook-warnings-for-async-function-in-useeffect-useeffect-function-must-ret
   useEffect(() => {
-    async function generateSolution() {
-      let lineNum = Math.floor((Math.random() * WORDS.length)); 
-      setSolution(WORDS[lineNum]);
-      console.log("solution: " + WORDS[lineNum]);
+    function generateSolution() {
+      // let lineNum = Math.floor((Math.random() * WORDS.length)); 
+      // setSolution(WORDS[lineNum]);
+      // console.log("solution: " + WORDS[lineNum]);
+      setSolution("lettre")
     };
     generateSolution();
     setGuessNumber(1);
@@ -110,6 +111,16 @@ function App () {
   /*=================================================================
     SUBMITTING GUESS
   =================================================================*/
+  function countCharacterOccurrences(word, char) {
+    let count = 0; 
+    for (let i = 0; i < word.length; i++) {
+      if (word[i] === char) {
+        count++;
+      }
+    }
+    return count;
+  }
+
   // verify guess
   function verifyGuess(guess) {
     // check if guess is in list
@@ -138,14 +149,29 @@ function App () {
         // green
         if (solution[i] === guess[i]) {
           verifArray[i] = 2; // green
+          // // backtrack, check if we set any yellows for the same letter
+          for (let j = 0; j < guess.length; j++) {
+            if (j === i) continue;
+            if (guess[j] === guess[i] && verifArray[j] === 1 && countCharacterOccurrences(solution, guess[i]) === 1) {
+              verifArray[j] = 0;
+            }
+          }
           continue;
         // yellow
         } else if (solution.includes(guess[i])) {
           verifArray[i] = 1; // yellow
+          // duplicate yellow handling: 
+          // if there is already a yellow for the same letter (and the letter only occurs once), make it grey
+          for (let k = 0; k < guess.length; k++) {
+            if (k === i) continue;
+            if (verifArray[k] === 1 && guess[k] === guess[i] && countCharacterOccurrences(solution, guess[k]) === 1) {
+              verifArray[i] = 0; // grey
+              continue;
+            }
+          }
         } else {
             verifArray[i] = 0; // grey
         }
-        // todo: duplicate letter handling
       }
 
       console.log("guess " + guess + ", status: " + verifArray);

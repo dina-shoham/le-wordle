@@ -139,12 +139,14 @@ function App () {
 
   // verify guess
   async function verifyGuess() {
-    let guess = currentGuess;
-    // console.log("you guessed " + currentGuess);
+    // let guess = currentGuess;
+    console.log("calling checkIfFrenchWord on " + currentGuess);
     setDisplayGuess(true);
 
-    await checkIfFrenchWord(guess);      
+    await checkIfFrenchWord(currentGuess);      
     console.log(`is it a real word??? ${isFrenchWord}`);
+
+    let guess = "maison";
     
     if (isFrenchWord && guess.length === 6) {
       let verifArray = emptyStatusArr;
@@ -251,7 +253,7 @@ function App () {
   /*=================================================================
     HELPERS
   =================================================================*/
-  function testGuess({display}) {
+  function TestGuess({display}) {
     if(display) {
       return <p>{currentGuess}</p>
     } else {
@@ -279,7 +281,7 @@ function App () {
       </div>
       <div>
         <p>current guess is: {currentGuess}</p>
-        <testGuess display={displayGuess} />
+        <TestGuess display={displayGuess} />
       </div>
     </div>
   );

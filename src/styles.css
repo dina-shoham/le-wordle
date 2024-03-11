@@ -89,3 +89,16 @@ code {
   text-align: center;
   width: 50px;
 }
+
+.key {
+  background: var(--lightgrey);
+  font-size: 18px;
+  font-weight: bold;
+  height: 50px;
+  width: 30px;
+  margin-right: 5px;
+  margin-top: 5px;
+  padding: 10;
+  text-align: center;
+  border-radius: 5px
+}

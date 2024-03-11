@@ -11,15 +11,14 @@ although I wouldn't recommend trying it just yet (big bugs atm), you can run the
     - six letter word
     - seven guesses
     - probably a bit shittier
+    - no accentS!! to make my life easier
 
 ## tech stack
 
 - react app
-- apis:
-    - trouve-mot → generating solution
-    - wikimedia → checking if a word is a real french word (change later)
 - libraries:
     - create-react-app
+    - list of french words: [https://github.com/Taknok/French-Wordlist/blob/master/francais.txt](https://github.com/Taknok/French-Wordlist/blob/master/francais.txt)
     - toastify for notif messages (win/lose) [https://github.com/apvarun/toastify-js/blob/master/README.md](https://github.com/apvarun/toastify-js/blob/master/README.md)
 
 ## features
@@ -44,7 +43,7 @@ although I wouldn't recommend trying it just yet (big bugs atm), you can run the
                 - [x]  ints: -1 = not yet verified, 0 = incorrect/gray, 1 = wrong position/yellow, 2 = correct/green
             - [x]  iterate over letters of word, setting status
             - [x]  pass solution back to app??
-            - [ ]  handle repeat letters (at least one green or yellow)
+            - [x]  handle repeat letters (at least one green or yellow)
 - [x]  guess grid
     - [x]  components:
         - [x]  show grid of all seven guesses at beginning
@@ -63,13 +62,12 @@ although I wouldn't recommend trying it just yet (big bugs atm), you can run the
     - [ ]  disable special characters and numbers
 - [ ]  styling:
     - [ ]  animate letters
-    - [ ]  capital letters
-    - [ ]  toast boxes (move styling to css file)
-    - [ ]  center everything
+    - [x]  capital letters
+    - [x]  center everything
     - [ ]  polish page
         - [ ]  header/nice looking site title
-        - [ ]  center page, add margins
-        - [ ]  favicon, site title
+        - [x]  favicon, site title
+        - [ ]  instructions popup
 
 **nice to haves:**
 

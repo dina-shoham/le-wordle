@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Guess from './components/Guess';
-import GuessInput from './components/GuessInput';
 import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
 import './styles.css';
@@ -127,9 +126,9 @@ function App () {
     // check if guess is in list
     if (!WORDS.includes(guess)) {
       isValidGuess = false;
-      console.log("word not in list!");
+      console.log("Pas un mot!");
       Toastify({
-        text: `Word not in list!`,
+        text: `Pas un mot!`,
         duration: 2000,
         position: 'center',
         offset: {
@@ -249,23 +248,16 @@ function App () {
     RENDER
   =================================================================*/
   return (
-    <div>
-      <h1>le wordle</h1>
-      {/* <GuessInput solution={solution} 
-                  guessIncrementer={incrementGuessNumber}
-                  guessListUpdater={updateGuessList}
-                  disabled={guessingDisabled}/> */}
+    <div className='container'>
       <div>
-        <p>you are on guess #: {guessNumber}</p>
+        <h1>Le Wordle</h1>
+      </div>
+      <div>
           {guesses.map((guess, index) => (
             <Guess word={guess.word}
                    statusArr={guess.status}
                    key={index}/>
           ))}
-      </div>
-      <div>
-        <p>current guess is: {currentGuess}</p>
-        <p>current guess index is: {currentGuessIndex}</p>
       </div>
     </div>
   );

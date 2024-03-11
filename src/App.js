@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Guess from './components/Guess';
+import Keyboard from './components/Keyboard';
 import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
 import './styles.css';
@@ -12,6 +13,13 @@ function App () {
   // var currentGuess = "";
   const emptyStatusArr = [-1, -1, -1, -1, -1, -1];
   let isValidGuess = true;
+  
+  // keep track of keyboard letter status
+  // indexed based on azerty keyboard: arr[0] represents a, arr[1] represents z, etc.
+  // so order is: azertyuiopqsdfghjklmwxcvbn
+  const [keyStatusArray, setKeyStatusArray] = useState([-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+                                               -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+                                               -1, -1, -1, -1, -1, -1]);
   
   const [solution, setSolution] = useState("");
   const [guessNumber, setGuessNumber] = useState(-1);
@@ -32,7 +40,6 @@ function App () {
     SETUP
   =================================================================*/
   // call generate solution, empty array to ensure it only happens once
-  // https://stackoverflow.com/questions/53332321/react-hook-warnings-for-async-function-in-useeffect-useeffect-function-must-ret
   useEffect(() => {
     function generateSolution() {
       let lineNum = Math.floor((Math.random() * WORDS.length)); 
@@ -111,16 +118,6 @@ function App () {
   /*=================================================================
     SUBMITTING GUESS
   =================================================================*/
-  function countCharacterOccurrences(word, char) {
-    let count = 0; 
-    for (let i = 0; i < word.length; i++) {
-      if (word[i] === char) {
-        count++;
-      }
-    }
-    return count;
-  }
-
   // verify guess
   function verifyGuess(guess) {
     // check if guess is in list
@@ -172,6 +169,18 @@ function App () {
         } else {
             verifArray[i] = 0; // grey
         }
+
+        // run thru verifArray and set keyStatusArray accordingly
+        let keyStatusArrayTmp = [...keyStatusArray];
+        for (let i = 0; i < verifArray.length; i++) {
+          if (verifArray[i] !== -1) {
+            let charIndex = getCharacterIndex(guess[i]); // get keyboard index associated w current char
+            if (verifArray[i] > keyStatusArrayTmp[charIndex]) { // only update key status from grey -> yellow -> green (can't backtrack green to grey)
+              keyStatusArrayTmp[charIndex] = verifArray[i];
+            }
+          }
+        } 
+        setKeyStatusArray(() => keyStatusArrayTmp);
       }
 
       // add guess to guesses array, increment guess count
@@ -213,10 +222,6 @@ function App () {
   }, [guessNumber]);
   
   // winning
-  function equals2(element) {
-    return element == 2;
-  }
-
   useEffect(() => {
     let hasWon = false;
 
@@ -224,6 +229,7 @@ function App () {
       let mostRecentGuessStatus = guesses[guessNumber - 2].status; // - 2 because -1 for index, -1 because we increment guess number after hitting enter
       hasWon = mostRecentGuessStatus.every(equals2);
     }
+    
     if (hasWon) {
       // disable input
       setGuessingDisabled(true);
@@ -245,6 +251,33 @@ function App () {
   }, [guessNumber]);
 
   /*=================================================================
+    HELPER FUNCTIONS
+  =================================================================*/
+  // returns index in keyboard array for a given character
+  function getCharacterIndex(char) {
+    let charArray = ['a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 
+                     'q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 
+                     'w', 'x', 'c', 'v', 'b', 'n'];
+    for (let i = 0; i < charArray.length; i++) {
+      if (charArray[i] === char) return i;
+    }
+  }
+  
+  function countCharacterOccurrences(word, char) {
+    let count = 0; 
+    for (let i = 0; i < word.length; i++) {
+      if (word[i] === char) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  function equals2(element) {
+    return element == 2;
+  }
+  
+  /*=================================================================
     RENDER
   =================================================================*/
   return (
@@ -258,6 +291,9 @@ function App () {
                    statusArr={guess.status}
                    key={index}/>
           ))}
+      </div>
+      <div>
+        <Keyboard keyStatusArray={keyStatusArray}/>
       </div>
     </div>
   );

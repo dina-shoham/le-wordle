@@ -16,4 +16,4 @@ function Key({letter, status}) {
     return <button className={className}>{letter}</button>;
 }
 
-export default LetterTile;
+export default Key;

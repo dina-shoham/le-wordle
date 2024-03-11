@@ -52,8 +52,11 @@ although I wouldn't recommend trying it just yet (big bugs atm), you can run the
         - [x]  letter tiles
             - [x]  change colour: default, grey, yellow, and green
 - [ ]  onscreen keyboard
-    - [ ]  get layout working
-    - [ ]  change colours
+    - [x]  get layout working
+    - [x]  change colours
+    - [ ]  add delete and enter buttons
+    - [ ]  make keys clickable
+    - [ ]  bug: keys don't change after winning
 - [ ]  game functionality
     - [x]  lose after 7 guesses
         - [x]  display error message
@@ -71,7 +74,6 @@ although I wouldn't recommend trying it just yet (big bugs atm), you can run the
 
 **nice to haves:**
 
-- [ ]  onscreen keyboard
 - [ ]  param for word length
 - [ ]  dark mode
 - [ ]  instructions

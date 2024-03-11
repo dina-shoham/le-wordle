@@ -292,6 +292,7 @@ function App () {
                    key={index}/>
           ))}
       </div>
+      <div><p> </p></div> 
       <div>
         <Keyboard keyStatusArray={keyStatusArray}/>
       </div>

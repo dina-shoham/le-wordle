@@ -27,11 +27,13 @@ function Keyboard({keyStatusArray}) {
 
              {/* third row (WXCVBN) */}
              <div>
+                <Key letter="entrée" status="3"/>
                 {row3Arr.map((letter, index) => {
                     return <Key key={index} 
                     letter={letter}
                     status={keyStatusArray[index + 10 + 10]}/>
                 })}
+                <Key letter="suppr" status="3"/>
             </div>
         </div>
     )

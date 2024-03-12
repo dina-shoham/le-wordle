@@ -54,7 +54,7 @@ although there are a few bugs remaining, you are welcome to try it out! you can 
 - [ ]  onscreen keyboard
     - [x]  get layout working
     - [x]  change colours
-    - [ ]  add delete and enter buttons
+    - [x]  add delete and enter buttons
     - [ ]  make keys clickable
     - [ ]  bug: keys don't change after winning
 - [ ]  game functionality
@@ -68,7 +68,7 @@ although there are a few bugs remaining, you are welcome to try it out! you can 
     - [x]  capital letters
     - [x]  center everything
     - [ ]  polish page
-        - [ ]  header/nice looking site title
+        - [x]  header/nice looking site title
         - [x]  favicon, site title
         - [ ]  instructions popup
 

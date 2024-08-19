@@ -27,6 +27,7 @@ code {
 }
 
 .square {
+  vertical-align: top; /*https://www.reddit.com/r/react/comments/1c9p921/button_shifting_after_value_is_updated/*/
   background: var(--white);
   border: 2px solid var(--lightgrey);
   text-transform: uppercase;

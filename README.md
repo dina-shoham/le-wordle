@@ -54,23 +54,22 @@ although I wouldn't recommend trying it just yet (big bugs atm), you can run the
 - [ ]  onscreen keyboard
     - [x]  get layout working
     - [x]  change colours
-    - [ ]  add delete and enter buttons
+    - [x]  add delete and enter buttons
     - [ ]  make keys clickable
     - [ ]  bug: keys don't change after winning
-- [ ]  game functionality
+- [x]  game functionality
     - [x]  lose after 7 guesses
         - [x]  display error message
         - [x]  disable input
     - [x]  win if they get it right
-    - [ ]  disable special characters and numbers
+    - [x]  disable special characters and numbers
 - [ ]  styling:
     - [ ]  animate letters
     - [x]  capital letters
     - [x]  center everything
-    - [ ]  polish page
-        - [ ]  header/nice looking site title
+    - [x]  polish page
+        - [x]  header/site title
         - [x]  favicon, site title
-        - [ ]  instructions popup
 
 **nice to haves:**
 

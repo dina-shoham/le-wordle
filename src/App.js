@@ -39,7 +39,7 @@ function App () {
   /*=================================================================
     SETUP
   =================================================================*/
-  // call generate solution, empty array to ensure it only happens once
+  // call generate solution, empty array to ensure it only happens once (on initial render)
   useEffect(() => {
     function generateSolution() {
       let lineNum = Math.floor((Math.random() * WORDS.length)); 
@@ -50,6 +50,7 @@ function App () {
     setGuessNumber(1);
   }, []);
 
+  // set key status array to empty if on first guess
   useEffect(() => {
     if (guessNumber === 1) {
       resetKeyStatusArr();
@@ -70,14 +71,14 @@ function App () {
           }
           
           // backspace
-          if (event.keyCode == 8) {
+          if (event.keyCode === 8) {
             handleBackspace();
           }
         } 
         
-        if (currentGuessIndex == 5) {
-          // enter
-          if (event.keyCode == 13) {
+        if (currentGuessIndex === 5) {
+          // hit enter, submit guess
+          if (event.keyCode === 13) {
             verifyGuess(currentGuess);
           }
         }
@@ -98,7 +99,7 @@ function App () {
   
   // handle backspace event
   function handleBackspace() {
-    // prevent from decementing past -1
+    // prevent from decrementing past -1
     if (currentGuessIndex > -1) {
       setCurrentGuessIndex(currentGuessIndex => currentGuessIndex - 1);
     }
@@ -129,9 +130,9 @@ function App () {
     // check if guess is in list
     if (!WORDS.includes(guess)) {
       isValidGuess = false;
-      console.log("Pas sur la liste!");
+      console.log("Je ne connais pas ce mot!");
       Toastify({
-        text: `Pas sur la liste!`,
+        text: `Je ne connais pas ce mot!`,
         duration: 2000,
         position: 'center',
         offset: {
@@ -288,7 +289,7 @@ function App () {
   }
 
   function equals2(element) {
-    return element == 2;
+    return element === 2;
   }
 
   function resetKeyStatusArr() {

@@ -11,6 +11,8 @@ function Key({letter, status}) {
         className="key-yellow";
     } else if (status == 2) {
         className="key-green";
+    } else if (status == 3) {
+        className="key-wide";
     }
 
     return <button className={className}>{letter}</button>;

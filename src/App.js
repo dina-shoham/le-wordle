@@ -39,7 +39,7 @@ function App () {
   /*=================================================================
     SETUP
   =================================================================*/
-  // call generate solution, empty array to ensure it only happens once
+  // call generate solution, empty array to ensure it only happens once (on initial render)
   useEffect(() => {
     function generateSolution() {
       let lineNum = Math.floor((Math.random() * WORDS.length)); 
@@ -49,6 +49,13 @@ function App () {
     generateSolution();
     setGuessNumber(1);
   }, []);
+
+  // set key status array to empty if on first guess
+  useEffect(() => {
+    if (guessNumber === 1) {
+      resetKeyStatusArr();
+    }
+  }, [guessNumber])
 
   /*=================================================================
     TYPING GUESS
@@ -64,14 +71,14 @@ function App () {
           }
           
           // backspace
-          if (event.keyCode == 8) {
+          if (event.keyCode === 8) {
             handleBackspace();
           }
         } 
         
-        if (currentGuessIndex == 5) {
-          // enter
-          if (event.keyCode == 13) {
+        if (currentGuessIndex === 5) {
+          // hit enter, submit guess
+          if (event.keyCode === 13) {
             verifyGuess(currentGuess);
           }
         }
@@ -92,7 +99,7 @@ function App () {
   
   // handle backspace event
   function handleBackspace() {
-    // prevent from decementing past -1
+    // prevent from decrementing past -1
     if (currentGuessIndex > -1) {
       setCurrentGuessIndex(currentGuessIndex => currentGuessIndex - 1);
     }
@@ -123,9 +130,9 @@ function App () {
     // check if guess is in list
     if (!WORDS.includes(guess)) {
       isValidGuess = false;
-      console.log("Pas un mot!");
+      console.log("Je ne connais pas ce mot!");
       Toastify({
-        text: `Pas un mot!`,
+        text: `Je ne connais pas ce mot!`,
         duration: 2000,
         position: 'center',
         offset: {
@@ -146,28 +153,36 @@ function App () {
         // green
         if (solution[i] === guess[i]) {
           verifArray[i] = 2; // green
-          // // backtrack, check if we set any yellows for the same letter
-          for (let j = 0; j < guess.length; j++) {
-            if (j === i) continue;
-            if (guess[j] === guess[i] && verifArray[j] === 1 && countCharacterOccurrences(solution, guess[i]) === 1) {
-              verifArray[j] = 0;
-            }
-          }
           continue;
         // yellow
         } else if (solution.includes(guess[i])) {
           verifArray[i] = 1; // yellow
-          // duplicate yellow handling: 
-          // if there is already a yellow for the same letter (and the letter only occurs once), make it grey
-          for (let k = 0; k < guess.length; k++) {
-            if (k === i) continue;
-            if (verifArray[k] === 1 && guess[k] === guess[i] && countCharacterOccurrences(solution, guess[k]) === 1) {
-              verifArray[i] = 0; // grey
-              continue;
-            }
-          }
         } else {
             verifArray[i] = 0; // grey
+        }
+
+        // run back thru to check for dup letters
+        for (let i = 0; i < guess.length; i++) {
+          // green
+          if (solution[i] === guess[i]) {
+            for (let j = 0; j < guess.length; j++) {
+              if (j === i) continue;
+              // get rid of tiles turned yellow for letter X if there is only one X in sol and it's green
+              if (guess[j] === guess[i] && verifArray[j] === 1 && countCharacterOccurrences(solution, guess[i]) === 1) {
+                verifArray[j] = 0;
+              }
+            }
+            continue;
+          // yellow
+          } else if (solution.includes(guess[i])) {
+            for (let k = 0; k < guess.length; k++) {
+              if (k === i) continue;
+              // get rid of duplicate yellows if there's only one in solution
+              if (verifArray[k] === 1 && guess[k] === guess[i] && countCharacterOccurrences(solution, guess[k]) === 1) {
+                verifArray[i] = 0; // grey
+              }
+            }
+          }
         }
 
         // run thru verifArray and set keyStatusArray accordingly
@@ -274,7 +289,13 @@ function App () {
   }
 
   function equals2(element) {
-    return element == 2;
+    return element === 2;
+  }
+
+  function resetKeyStatusArr() {
+    setKeyStatusArray(() => [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+      -1, -1, -1, -1, -1, -1]);
   }
   
   /*=================================================================
@@ -292,6 +313,7 @@ function App () {
                    key={index}/>
           ))}
       </div>
+      <div><p> </p></div> 
       <div>
         <Keyboard keyStatusArray={keyStatusArray}/>
       </div>

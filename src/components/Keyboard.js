@@ -13,7 +13,7 @@ function Keyboard({keyStatusArray}) {
                     return <Key key={index} 
                     letter={letter}
                                 status={keyStatusArray[index]}/>
-                            })}
+                })}
             </div>
 
             {/* second row (QSDFGHJKLM) */}

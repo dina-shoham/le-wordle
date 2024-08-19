@@ -1,4 +1,4 @@
-/* word guess component */
+/* key component */
 import './../styles.css';
 
 function Key({letter, status}) {

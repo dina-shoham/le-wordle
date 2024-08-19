@@ -2,7 +2,7 @@
 Pour mes enfants d'acceuil, qui veulent toujours faire le wordle avec moi mais qui n'arrive jamais à trouver des mots anglais.
 
 ## try it out for yourself!
-although I wouldn't recommend trying it just yet (big bugs atm), you can run the app by downloading the source code locally and running ```npm start```.
+although there are a few bugs remaining, you are welcome to try it out! you can run the app by downloading the source code locally and running ```npm start``` in the src folder.
 
 ## basic idea
 

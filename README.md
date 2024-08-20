@@ -1,48 +1,39 @@
 # Le Wordle
 Pour mes enfants d'acceuil, qui veulent toujours faire le wordle avec moi mais qui n'arrive jamais à trouver des mots anglais.
+A React/JS Wordle clone in French, with six letter words, seven guesses, and no accents to make my life easier.
 
-## try it out for yourself!
-although there are a few bugs remaining, you are welcome to try it out! you can run the app by downloading the source code locally and running ```npm start``` in the src folder.
+## Try it out for yourself!
+The app is currently hosted on shoham.ca/dina/le-wordle (it's ugly on mobile, apologies!)
 
-## basic idea
+## Tech Stack
 
-- pretty much the same as the wordle except:
-    - french
-    - six letter word
-    - seven guesses
-    - probably a bit shittier
-    - no accentS!! to make my life easier
-
-## tech stack
-
-- react app
-- libraries:
+- React App (using the classics: node, JS, CSS, etc.)
+- Libraries:
     - create-react-app
     - list of french words: [https://github.com/Taknok/French-Wordlist/blob/master/francais.txt](https://github.com/Taknok/French-Wordlist/blob/master/francais.txt)
     - toastify for notif messages (win/lose) [https://github.com/apvarun/toastify-js/blob/master/README.md](https://github.com/apvarun/toastify-js/blob/master/README.md)
 
-## features
+## Features
 
 **required features:**
 
 - [x]  generate random word for solution upon initial render (useEffect, [])
-    - [x]  [trouve-mot.fr](http://trouve-mot.fr) api
+    - [x]  picks a random line number from `src/dictionary/words`
 - [ ]  input guess
     - [x]  type guess in grid
         - [x]  submit guess
-        - [ ]  bug: squares shift down when user starts typing
+        - [x]  bug: squares shift down when user starts typing
     - [x]  components: one component with text input + submit button
         - [x]  clear input after submit but do not refresh the page
     - [x]  input validation:
         - [x]  6 letter word
         - [x]  real french word
-            - [x]  need a french dictionary api → [https://api.lexicala.com/sign-up/](https://api.lexicala.com/sign-up/)
+            - [x]  need a french dictionary -> ended up using [this](https://github.com/Taknok/French-Wordlist/blob/master/francais.txt) instead of an API like Lexicala or Wiktionnaire
     - [x]  check guess:
         - [x]  check against solution
             - [x]  create verification array (length 6 to correspond w word)
                 - [x]  ints: -1 = not yet verified, 0 = incorrect/gray, 1 = wrong position/yellow, 2 = correct/green
             - [x]  iterate over letters of word, setting status
-            - [x]  pass solution back to app??
             - [x]  handle repeat letters (at least one green or yellow)
 - [x]  guess grid
     - [x]  components:
@@ -50,13 +41,13 @@ although there are a few bugs remaining, you are welcome to try it out! you can 
             - [x]  type in the boxes instead of in input
         - [x]  single guess component, render list of each guess
         - [x]  letter tiles
-            - [x]  change colour: default, grey, yellow, and green
+            - [x]  change colour: default (light grey), grey, yellow, and green
 - [ ]  onscreen keyboard
     - [x]  get layout working
     - [x]  change colours
     - [x]  add delete and enter buttons
     - [ ]  make keys clickable
-    - [ ]  bug: keys don't change after winning
+    - [x]  bug: keys don't change after winning
 - [x]  game functionality
     - [x]  lose after 7 guesses
         - [x]  display error message
@@ -76,6 +67,5 @@ although there are a few bugs remaining, you are welcome to try it out! you can 
 - [ ]  param for word length
 - [ ]  dark mode
 - [ ]  instructions
-- [ ]  homepage
-- [ ]  web hosting
+- [x]  web hosting
 - [x]  switch api calls to a library of most common french words

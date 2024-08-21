@@ -1,7 +1,7 @@
 /* key component */
 import './../styles.css';
 
-function Key({letter, status}) {
+function Key({letter, status, setKeyClicked}) {
     let className = "key";
     if (status == -1) {
         className="key";
@@ -15,7 +15,12 @@ function Key({letter, status}) {
         className="key-wide";
     }
 
-    return <button className={className}>{letter}</button>;
+    let onClick = () => {
+        console.log("clicked " + letter);
+        setKeyClicked(() => letter);
+    }
+
+    return <button className={className} onClick={onClick}>{letter}</button>;
 }
 
 export default Key;

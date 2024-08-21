@@ -1,6 +1,6 @@
 import Key from './Key';
 
-function Keyboard({keyStatusArray}) {
+function Keyboard({keyStatusArray,  setKeyClicked}) {
     const row1Arr = ['a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
     const row2Arr = ['q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm']
     const row3Arr = ['w', 'x', 'c', 'v', 'b', 'n']
@@ -11,8 +11,10 @@ function Keyboard({keyStatusArray}) {
             <div>
                 {row1Arr.map((letter, index) => {
                     return <Key key={index} 
+                    setKeyClicked={setKeyClicked}
+                    // onClick={onClick}
                     letter={letter}
-                                status={keyStatusArray[index]}/>
+                    status={keyStatusArray[index]}/>
                 })}
             </div>
 
@@ -20,6 +22,8 @@ function Keyboard({keyStatusArray}) {
             <div>
                 {row2Arr.map((letter, index) => {
                     return <Key key={index} 
+                    setKeyClicked={setKeyClicked}
+                    // onClick={onClick}
                     letter={letter}
                     status={keyStatusArray[index + 10]}/>
                 })}
@@ -27,13 +31,23 @@ function Keyboard({keyStatusArray}) {
 
              {/* third row (WXCVBN) */}
              <div>
-                <Key letter="entrée" status="3"/>
+                <Key 
+                     setKeyClicked={setKeyClicked}
+                // onClick={onClick}
+                     letter="entrée" 
+                     status="3"/>
                 {row3Arr.map((letter, index) => {
                     return <Key key={index} 
+                    setKeyClicked={setKeyClicked}
+                    // onClick={onClick}
                     letter={letter}
                     status={keyStatusArray[index + 10 + 10]}/>
                 })}
-                <Key letter="suppr" status="3"/>
+                <Key 
+                     setKeyClicked={setKeyClicked}
+                // onClick={onClick}
+                     letter="suppr"
+                     status="3"/>
             </div>
         </div>
     )

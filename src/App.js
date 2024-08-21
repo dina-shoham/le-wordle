@@ -20,7 +20,7 @@ function App () {
   const [keyStatusArray, setKeyStatusArray] = useState([-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
     -1, -1, -1, -1, -1, -1]);
-    
+  const [keyClicked, setKeyClicked] = useState("");
   const [solution, setSolution] = useState("");
   const [guessNumber, setGuessNumber] = useState(-1);
   const [currentGuess, setCurrentGuess] = useState("");
@@ -58,19 +58,27 @@ function App () {
   }, [guessNumber])
 
   /*=================================================================
-    TYPING GUESS
+    INPUTTING GUESS
   =================================================================*/
-  // keyboard listener for typing in guesses
+  // HELPER FUNCTIONS FOR INPUTTING GUESSES
+  // update current guess
+  function updateCurrentGuess(char) {
+    setCurrentGuessIndex(currentGuessIndex => currentGuessIndex + 1);
+    setCurrentGuess(currentGuess => currentGuess + char);
+  };
+  
+  // handle backspace event
+  function handleBackspace() {
+    // prevent from decrementing past -1
+    if (currentGuessIndex > -1) {
+      setCurrentGuessIndex(currentGuessIndex => currentGuessIndex - 1);
+    }
+    setCurrentGuess(currentGuess => currentGuess.substring(0, currentGuess.length - 1));
+  };
+  
+  // TYPE TO INPUT
   useEffect(() => {
-    // handle backspace event
-    const handleBackspace = () => {
-      // prevent from decrementing past -1
-      if (currentGuessIndex > -1) {
-        setCurrentGuessIndex(currentGuessIndex => currentGuessIndex - 1);
-      }
-      setCurrentGuess(currentGuess => currentGuess.substring(0, currentGuess.length - 1));
-    };
-
+    // keypress logic
     const keyDownHandler = event => {
       if (!guessingDisabled) {  
         if (currentGuessIndex <= 5 || !isValidGuess) {
@@ -85,6 +93,7 @@ function App () {
           }
         } 
         
+        // enter
         if (currentGuessIndex === 5) {
           // hit enter, submit guess
           if (event.keyCode === 13) {
@@ -93,20 +102,43 @@ function App () {
         }
       }
     }
+
+    // add event listener to the document
     document.addEventListener('keydown', keyDownHandler);
     return () => {
       document.removeEventListener('keydown', keyDownHandler);
     };
   }, [currentGuess, currentGuessIndex, guessingDisabled]);
   
-  // typing helpers: 
-  // update current guess
-  function updateCurrentGuess(char) {
-    setCurrentGuessIndex(currentGuessIndex => currentGuessIndex + 1);
-    setCurrentGuess(currentGuess => currentGuess + char);
-  };
-  
-  // render current guess in the boxes on the screen (only guesses array renders)
+  // CLICK TO INPUT
+  useEffect(() => {
+    // actual clicking logic
+    if (!guessingDisabled) {  
+      if (currentGuessIndex <= 5 || !isValidGuess) {
+        // if key is in alphabet, render and add to guess
+        if (currentGuessIndex < 5 && keyClicked.match(/[a-z]/i) && keyClicked.length === 1) {
+          updateCurrentGuess(keyClicked);
+        }
+        
+        // backspace
+        if (keyClicked === "suppr") {
+          handleBackspace();
+        }
+      } 
+      
+      // enter
+      if (currentGuessIndex === 5) {
+        // hit enter, submit guess
+        if (keyClicked === "entrée") {
+          verifyGuess(currentGuess);
+        }
+      }
+    }
+
+    setKeyClicked(() => '');
+  }, [keyClicked]);
+
+  // RENDER CURRENT GUESS in the boxes on the screen (only guesses array renders)
   useEffect(() => {
     if (guessNumber <= 7) {
       var guessPadded = currentGuess;
@@ -316,7 +348,7 @@ function App () {
       </div>
       <div><p> </p></div> 
       <div>
-        <Keyboard keyStatusArray={keyStatusArray}/>
+        <Keyboard keyStatusArray={keyStatusArray} setKeyClicked={setKeyClicked}/>
       </div>
     </div>
   );

@@ -73,7 +73,8 @@ code {
   margin-top: 5px;
   padding: 10;
   text-align: center;
-  border-radius: 5px
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .key-light-grey {

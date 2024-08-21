@@ -4,15 +4,15 @@ import './../styles.css';
 function Key({letter, status, setKeyClicked}) {
     let className = "key";
     if (status == -1) {
-        className="key";
+        className="key key-light-grey";
     } else if (status == 0) {
-        className="key-grey";
+        className="key key-grey";
     } else if (status == 1) {
-        className="key-yellow";
+        className="key key-yellow";
     } else if (status == 2) {
-        className="key-green";
+        className="key key-green";
     } else if (status == 3) {
-        className="key-wide";
+        className="key key-wide";
     }
 
     let onClick = () => {

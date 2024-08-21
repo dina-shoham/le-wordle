@@ -69,3 +69,4 @@ The app is currently hosted on shoham.ca/dina/le-wordle (it's ugly on mobile, ap
 - [ ]  instructions
 - [x]  web hosting
 - [x]  switch api calls to a library of most common french words
+- [ ]  make it work on mobile

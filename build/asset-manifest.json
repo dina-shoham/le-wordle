@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/dina/le-wordle/static/css/main.1361d809.css",
+    "main.js": "/dina/le-wordle/static/js/main.b28b0cc8.js",
+    "index.html": "/dina/le-wordle/index.html",
+    "main.1361d809.css.map": "/dina/le-wordle/static/css/main.1361d809.css.map",
+    "main.b28b0cc8.js.map": "/dina/le-wordle/static/js/main.b28b0cc8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1361d809.css",
+    "static/js/main.b28b0cc8.js"
+  ]
+}

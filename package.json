@@ -1,5 +1,6 @@
 {
   "name": "le-wordle",
+  "homepage": "https://shoham.ca/dina/le-wordle/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

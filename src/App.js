@@ -8,7 +8,7 @@ import { WORDS } from './dictionary/words'
 
 function App () {
   /*=================================================================
-    VARIABLES
+  VARIABLES
   =================================================================*/
   // var currentGuess = "";
   const emptyStatusArr = [-1, -1, -1, -1, -1, -1];
@@ -18,9 +18,9 @@ function App () {
   // indexed based on azerty keyboard: arr[0] represents a, arr[1] represents z, etc.
   // so order is: azertyuiopqsdfghjklmwxcvbn
   const [keyStatusArray, setKeyStatusArray] = useState([-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-                                               -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-                                               -1, -1, -1, -1, -1, -1]);
-  
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+    -1, -1, -1, -1, -1, -1]);
+    
   const [solution, setSolution] = useState("");
   const [guessNumber, setGuessNumber] = useState(-1);
   const [currentGuess, setCurrentGuess] = useState("");
@@ -62,6 +62,15 @@ function App () {
   =================================================================*/
   // keyboard listener for typing in guesses
   useEffect(() => {
+    // handle backspace event
+    const handleBackspace = () => {
+      // prevent from decrementing past -1
+      if (currentGuessIndex > -1) {
+        setCurrentGuessIndex(currentGuessIndex => currentGuessIndex - 1);
+      }
+      setCurrentGuess(currentGuess => currentGuess.substring(0, currentGuess.length - 1));
+    };
+
     const keyDownHandler = event => {
       if (!guessingDisabled) {  
         if (currentGuessIndex <= 5 || !isValidGuess) {
@@ -97,15 +106,6 @@ function App () {
     setCurrentGuess(currentGuess => currentGuess + char);
   };
   
-  // handle backspace event
-  function handleBackspace() {
-    // prevent from decrementing past -1
-    if (currentGuessIndex > -1) {
-      setCurrentGuessIndex(currentGuessIndex => currentGuessIndex - 1);
-    }
-    setCurrentGuess(currentGuess => currentGuess.substring(0, currentGuess.length - 1));
-  };
-
   // render current guess in the boxes on the screen (only guesses array renders)
   useEffect(() => {
     if (guessNumber <= 7) {
@@ -121,7 +121,8 @@ function App () {
       setGuesses(() => guessesTmp);
     }
   }, [currentGuess, guessNumber])
-  
+
+
   /*=================================================================
     SUBMITTING GUESS
   =================================================================*/

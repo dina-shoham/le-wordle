@@ -19,10 +19,11 @@ The app is currently hosted on shoham.ca/dina/le-wordle (it's ugly on mobile, ap
 
 - [x]  generate random word for solution upon initial render (useEffect, [])
     - [x]  picks a random line number from `src/dictionary/words`
-- [ ]  input guess
+- [x]  input guess
     - [x]  type guess in grid
         - [x]  submit guess
         - [x]  bug: squares shift down when user starts typing
+    - [x] click guess
     - [x]  components: one component with text input + submit button
         - [x]  clear input after submit but do not refresh the page
     - [x]  input validation:
@@ -42,11 +43,11 @@ The app is currently hosted on shoham.ca/dina/le-wordle (it's ugly on mobile, ap
         - [x]  single guess component, render list of each guess
         - [x]  letter tiles
             - [x]  change colour: default (light grey), grey, yellow, and green
-- [ ]  onscreen keyboard
+- [x]  onscreen keyboard
     - [x]  get layout working
     - [x]  change colours
     - [x]  add delete and enter buttons
-    - [ ]  make keys clickable
+    - [x]  make keys clickable
     - [x]  bug: keys don't change after winning
 - [x]  game functionality
     - [x]  lose after 7 guesses

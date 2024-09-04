@@ -65,10 +65,11 @@ code {
 .key {
   border: 0px;
   text-transform: uppercase;
-  font-size: 18px;
+  color: black;
+  font-size: 16px;
   font-weight: bold;
-  height: 50px;
-  width: 35px;
+  height: 45px;
+  width: 28px;
   margin-right: 5px;
   margin-top: 5px;
   padding: 10;
@@ -99,5 +100,5 @@ code {
 .key-wide {
   background: var(--lightgrey);
   font-size: 12px;
-  width: 70px;
+  width: 62px;
 }

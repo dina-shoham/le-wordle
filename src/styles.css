@@ -27,6 +27,7 @@ code {
 }
 
 .square {
+  color: black;
   vertical-align: top; /*https://www.reddit.com/r/react/comments/1c9p921/button_shifting_after_value_is_updated/*/
   text-transform: uppercase;
   font-size: 24px;
@@ -34,7 +35,7 @@ code {
   height: 50px;
   margin-right: 5px;
   margin-top: 5px;
-  padding: 10;
+  padding: 10px;
   text-align: center;
   width: 50px;
 }
@@ -72,7 +73,7 @@ code {
   width: 28px;
   margin-right: 5px;
   margin-top: 5px;
-  padding: 10;
+  padding: 10px;
   text-align: center;
   border-radius: 5px;
   cursor: pointer;
